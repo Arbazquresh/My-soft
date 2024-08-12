@@ -19,6 +19,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export const Nav = () => {
   const navigate = useNavigate();
+
   const [value, setValue] = useState(0);
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [data, setData] = useState([]);
@@ -28,6 +29,11 @@ export const Nav = () => {
   const [fileName, setFileName] = useState("");
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
+
+  const handleTabClick = () => {
+    setOpenAddProduct(true);
+    navigate("/product");
+  };
 
   useEffect(() => {
     getData();
@@ -56,202 +62,199 @@ export const Nav = () => {
       return;
     }
 
-    const product = {
-      productName: productName,
-      productPrice: price,
-    };
+    // const product = {
+    //   productName: productName,
+    //   productPrice: price,
+    // };
 
-    const formData = new FormData();
-    formData.append(
-      "product",
-      new Blob([JSON.stringify(product)], { type: "application/json" })
-    );
-    formData.append("file", selectedFile);
+    // const formData = new FormData();
+    // formData.append(
+    //   "product",
+    //   new Blob([JSON.stringify(product)], { type: "application/json" })
+    // );
+    // formData.append("file", selectedFile);
 
-    try {
-      const response = await axios.post(
-        `http://localhost:8090/api/product/add-product/${selectedCategory}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
-          },
-        }
-      );
+    //   try {
+    //     const response = await axios.post(
+    //       `http://localhost:8090/api/product/add-product/${selectedCategory}`,
+    //       formData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //           Accept: "application/json",
+    //         },
+    //       }
+    //     );
 
-      console.log("Response:", response.data);
-      alert("Product added successfully!");
+    //     console.log("Response:", response.data);
+    //     alert("Product added successfully!");
 
-      // Reset form values
-      setProductName("");
-      setSelectedCategory("");
-      setPrice("");
-      setFileName("");
-      setSelectedFile(null);
-      setOpenAddProduct(false);
-    } catch (error) {
-      console.error("Error adding product:", error);
-      alert("Failed to add product. Please try again.");
-    }
+    //     // Reset form values
+    //     setProductName("");
+    //     setSelectedCategory("");
+    //     setPrice("");
+    //     setFileName("");
+    //     setSelectedFile(null);
+    //     setOpenAddProduct(false);
+    //   } catch (error) {
+    //     console.error("Error adding product:", error);
+    //     alert("Failed to add product. Please try again.");
+    //   }
   };
 
-  const AddProductModal = ({ open, onClose }) => {
-    const [localProductName, setLocalProductName] = useState(productName);
-    const [localPrice, setLocalPrice] = useState(price);
-    const [localSelectedCategory, setLocalSelectedCategory] = useState(selectedCategory);
+  // const AddProductModal = ({ open, onClose }) => {
+  //   const [localProductName, setLocalProductName] = useState(productName);
+  //   const [localPrice, setLocalPrice] = useState(price);
+  //   const [localSelectedCategory, setLocalSelectedCategory] =
+  //     useState(selectedCategory);
 
-    useEffect(() => {
-      if (open) {
-        setLocalProductName(productName);
-        setLocalPrice(price);
-        setLocalSelectedCategory(selectedCategory);
-      }
-    }, [open, productName, price, selectedCategory]);
+  //   useEffect(() => {
+  //     if (open) {
+  //       setLocalProductName(productName);
+  //       setLocalPrice(price);
+  //       setLocalSelectedCategory(selectedCategory);
+  //     }
+  //   }, [open, productName, price, selectedCategory]);
 
-    const handleProductNameChange = (e) => {
-      setLocalProductName(e.target.value);
-    };
+  //   const handleProductNameChange = (e) => {
+  //     setLocalProductName(e.target.value);
+  //   };
 
-    const handleAddProduct = async () => {
-      if (!selectedFile) {
-        alert("Please select a file first.");
-        return;
-      }
+  //   const handleAddProduct = async () => {
+  //     if (!selectedFile) {
+  //       alert("Please select a file first.");
+  //       return;
+  //     }
 
-      const product = {
-        productName: localProductName,
-        productPrice: localPrice,
-      };
+  //     const product = {
+  //       productName: localProductName,
+  //       productPrice: localPrice,
+  //     };
 
-      const formData = new FormData();
-      formData.append(
-        "product",
-        new Blob([JSON.stringify(product)], { type: "application/json" })
-      );
-      formData.append("file", selectedFile);
+  //     const formData = new FormData();
+  //     formData.append(
+  //       "product",
+  //       new Blob([JSON.stringify(product)], { type: "application/json" })
+  //     );
+  //     formData.append("file", selectedFile);
 
-      try {
-        const response = await axios.post(
-          `http://localhost:8090/api/product/add-product/${localSelectedCategory}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Accept: "application/json",
-            },
-          }
-        );
+  //     try {
+  //       const response = await axios.post(
+  //         `http://localhost:8090/api/product/add-product/${localSelectedCategory}`,
+  //         formData,
+  //         {
+  //           headers: {
+  //             "Content-Type": "multipart/form-data",
+  //             Accept: "application/json",
+  //           },
+  //         }
+  //       );
 
-        console.log("Response:", response.data);
-        alert("Product added successfully!");
+  //       console.log("Response:", response.data);
+  //       alert("Product added successfully!");
 
-        // Reset form values
-        setProductName("");
-        setSelectedCategory("");
-        setPrice("");
-        setFileName("");
-        setSelectedFile(null);
-        onClose(); // Close modal
-      } catch (error) {
-        console.error("Error adding product:", error);
-        alert("Failed to add product. Please try again.");
-      }
-    };
+  //       // Reset form values
+  //       setProductName("");
+  //       setSelectedCategory("");
+  //       setPrice("");
+  //       setFileName("");
+  //       setSelectedFile(null);
+  //       onClose(); // Close modal
+  //     } catch (error) {
+  //       console.error("Error adding product:", error);
+  //       alert("Failed to add product. Please try again.");
+  //     }
+  //   };
 
-    return (
-      <Modal
-        open={open}
-        onClose={onClose}
-        aria-labelledby="add-product-modal"
-        aria-describedby="add-product-description"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Box
-          sx={{
-            width: "80%",
-            maxWidth: 600,
-            bgcolor: "background.paper",
-            borderRadius: 2,
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography variant="h6" component="h2">
-            Add New Product
-          </Typography>
+  //   return (
+  //     <Modal
+  //       open={open}
+  //       onClose={onClose}
+  //       aria-labelledby="add-product-modal"
+  //       aria-describedby="add-product-description"
+  //       sx={{
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //       }}
+  //     >
+  //       <Box
+  //         sx={{
+  //           width: "80%",
+  //           maxWidth: 600,
+  //           bgcolor: "background.paper",
+  //           borderRadius: 2,
+  //           boxShadow: 24,
+  //           p: 4,
+  //         }}
+  //       >
+  //         <Typography variant="h6" component="h2">
+  //           Add New Product
+  //         </Typography>
 
-          <TextField
-            label="Product Name"
-            type="text"
-            fullWidth
-            sx={{ mb: 2 }}
-            value={localProductName}
-            onChange={handleProductNameChange}
-            autoFocus
-          />
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel id="select-label">Select Category</InputLabel>
-            <Select
-              labelId="select-label"
-              label="Select Category"
-              value={localSelectedCategory}
-              onChange={(e) => setLocalSelectedCategory(e.target.value)}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {data.map((item) => (
-                <MenuItem key={item.id} value={item.categoryName}>
-                  {item.categoryName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+  //         <TextField
+  //           label="Product Name"
+  //           type="text"
+  //           fullWidth
+  //           sx={{ mb: 2 }}
+  //           value={localProductName}
+  //           onChange={handleProductNameChange}
+  //           autoFocus
+  //         />
+  //         <FormControl fullWidth sx={{ mb: 2 }}>
+  //           <InputLabel id="select-label">Select Category</InputLabel>
+  //           <Select
+  //             labelId="select-label"
+  //             label="Select Category"
+  //             value={localSelectedCategory}
+  //             onChange={(e) => setLocalSelectedCategory(e.target.value)}
+  //           >
+  //             <MenuItem value="">
+  //               <em>None</em>
+  //             </MenuItem>
+  //             {data.map((item) => (
+  //               <MenuItem key={item.id} value={item.categoryName}>
+  //                 {item.categoryName}
+  //               </MenuItem>
+  //             ))}
+  //           </Select>
+  //         </FormControl>
 
-          <TextField
-            label="Price"
-            type="number"
-            fullWidth
-            sx={{ mb: 2 }}
-            value={localPrice}
-            onChange={(e) => setLocalPrice(e.target.value)}
-          />
-          <div>
-            <Button
-              component="label"
-              variant="contained"
-              startIcon={<CloudUploadIcon />}
-            >
-              Upload Product Image
-              <input
-                type="file"
-                hidden
-                onChange={handleFileChange}
-              />
-            </Button>
-            {fileName && <Typography variant="body2">{fileName}</Typography>}
-          </div>
-          <br />
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ mr: 2 }}
-            onClick={handleAddProduct}
-          >
-            Add Product
-          </Button>
-          <Button variant="outlined" color="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-        </Box>
-      </Modal>
-    );
-  };
+  //         <TextField
+  //           label="Price"
+  //           type="number"
+  //           fullWidth
+  //           sx={{ mb: 2 }}
+  //           value={localPrice}
+  //           onChange={(e) => setLocalPrice(e.target.value)}
+  //         />
+  //         <div>
+  //           <Button
+  //             component="label"
+  //             variant="contained"
+  //             startIcon={<CloudUploadIcon />}
+  //           >
+  //             Upload Product Image
+  //             <input type="file" hidden onChange={handleFileChange} />
+  //           </Button>
+  //           {fileName && <Typography variant="body2">{fileName}</Typography>}
+  //         </div>
+  //         <br />
+  //         <Button
+  //           variant="contained"
+  //           color="primary"
+  //           sx={{ mr: 2 }}
+  //           onClick={handleAddProduct}
+  //         >
+  //           Add Product
+  //         </Button>
+  //         <Button variant="outlined" color="secondary" onClick={onClose}>
+  //           Cancel
+  //         </Button>
+  //       </Box>
+  //     </Modal>
+  //   );
+  // };
 
   return (
     <Grid container spacing={2}>
@@ -277,7 +280,7 @@ export const Nav = () => {
           <Tab
             label="+Add Products"
             sx={{ color: "green" }}
-            onClick={() => setOpenAddProduct(true)}
+            onClick={handleTabClick}
           />
           <Tab
             label="+Add Category"
@@ -289,7 +292,11 @@ export const Nav = () => {
             sx={{ color: "green" }}
             onClick={() => navigate("/setting")}
           />
-          <Tab label="Reports" sx={{ color: "green" }} />
+          <Tab
+            label="Reports"
+            onClick={() => navigate("/report")}
+            sx={{ color: "green" }}
+          />
           <Button
             sx={{ borderRadius: "50px", height: "40px" }}
             onClick={() => navigate("/")}
@@ -300,11 +307,11 @@ export const Nav = () => {
           </Button>
         </Tabs>
       </Grid>
-
+      {/* 
       <AddProductModal
         open={openAddProduct}
         onClose={() => setOpenAddProduct(false)}
-      />
+      /> */}
     </Grid>
   );
 };
